@@ -84,6 +84,9 @@
 # 20170426  benwtr      Detect failure to retrieve catalog from server as a warning.
 # 20180324  deric       Discard puppet config error (logging) output
 
+# Additions by Lori 
+# 20210109 lcho         Translate multiline error output to single line
+
 # FUNCTIONS
 result () {
   case $1 in
@@ -145,7 +148,7 @@ parse_yaml () {
 # Get first error from last_run_report.yaml
 get_first_error() {
   grep_cmd="/bin/grep -B 4 -A 1 -m 1"
-  first_error=$($grep_cmd "status: failure" $lastrunreport | grep -A 2 "message: " | sed -E '/ +message: \|-/d;s/ +message: +//g' | sed -E 's/  +//g')
+  first_error=$($grep_cmd "status: failure" $lastrunreport | grep -A 2 "message: " | sed -E '/ +message: \|-/d;s/ +message: +//g' | sed -E 's/  +//g' | tr '\n ' ')
   echo "FIRST_ERROR ($first_error)"
 }
 
